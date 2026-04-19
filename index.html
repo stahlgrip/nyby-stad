@@ -68,40 +68,86 @@
         <h2>Allt inom städ, på ett ställe.</h2>
         <p class="section__lead">Vi anpassar upplägget efter dina behov — engångsstädning, återkommande eller projekt.</p>
       </div>
+      <p class="services__hint">💡 Klicka på en tjänst för att se prisexempel</p>
       <div class="services">
-        <article class="service">
+        <button type="button" class="service" data-service="hem">
           <div class="service__icon">🏠</div>
           <h3>Hemstädning</h3>
           <p>Regelbunden eller enstaka städning av ditt hem. Vi tar med egen utrustning och miljövänliga produkter.</p>
-        </article>
-        <article class="service">
+          <span class="service__more">Se priser →</span>
+        </button>
+        <button type="button" class="service" data-service="trapp">
           <div class="service__icon">🪜</div>
           <h3>Trappstädning</h3>
           <p>Fastighetsägare och bostadsrättsföreningar — schemalagd städning av trapphus och gemensamma ytor.</p>
-        </article>
-        <article class="service">
+          <span class="service__more">Se priser →</span>
+        </button>
+        <button type="button" class="service" data-service="bygg">
           <div class="service__icon">🧱</div>
           <h3>Byggstädning</h3>
           <p>Efter renovering eller nybyggnation — grov- och finstädning så allt är inflyttningsklart.</p>
-        </article>
-        <article class="service">
+          <span class="service__more">Se priser →</span>
+        </button>
+        <button type="button" class="service" data-service="kontor">
           <div class="service__icon">🏢</div>
           <h3>Kontorsstädning</h3>
           <p>Återkommande städning av kontor — ytor, kök, toaletter och golv. Fast schema eller flexibelt upplägg.</p>
-        </article>
-        <article class="service">
+          <span class="service__more">Se priser →</span>
+        </button>
+        <button type="button" class="service" data-service="bod">
           <div class="service__icon">🚧</div>
           <h3>Bodetablering</h3>
           <p>Städning av arbetsbodar, personalutrymmen och site-kontor på byggarbetsplatser — återkommande eller inför besiktning.</p>
-        </article>
-        <article class="service">
+          <span class="service__more">Se priser →</span>
+        </button>
+        <button type="button" class="service" data-service="fonster">
           <div class="service__icon">🪟</div>
           <h3>Fönsterputsning</h3>
           <p>Strimfria fönster in- och utvändigt — för hem, kontor och fastigheter. Enstaka tillfälle eller schemalagt.</p>
-        </article>
+          <span class="service__more">Se priser →</span>
+        </button>
       </div>
     </div>
   </section>
+
+  <!-- PRIS-MODAL -->
+  <div class="modal" id="priceModal" hidden aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal__backdrop" data-close-modal></div>
+    <div class="modal__card">
+      <button type="button" class="modal__close" data-close-modal aria-label="Stäng">×</button>
+      <div class="modal__body">
+        <div class="modal__head">
+          <span class="modal__icon" id="modalIcon"></span>
+          <div>
+            <span class="eyebrow" id="modalKind">Tjänst</span>
+            <h3 id="modalTitle"></h3>
+          </div>
+        </div>
+        <p id="modalDesc" class="modal__desc"></p>
+
+        <div class="modal__prices" id="modalPrices"></div>
+
+        <p class="modal__note" id="modalNote"></p>
+
+        <div class="modal__delivery">
+          <h4>🚲 Utkörningspeng</h4>
+          <ul>
+            <li><strong>Uppsala innerstad</strong> — <span class="pill pill--green">0 kr</span> (vi kör lådcykel)</li>
+            <li><strong>Övriga Uppsala tätort</strong> — 100 kr</li>
+            <li><strong>Omnejd upp till 15 km</strong> — 200 kr</li>
+            <li><strong>15–30 km från centrum</strong> — 350 kr</li>
+            <li><strong>Över 30 km</strong> — offert</li>
+          </ul>
+          <p class="modal__delivery-note">Priserna är inkl. moms. Utkörningspeng för företag debiteras exkl. moms med motsvarande belopp.</p>
+        </div>
+
+        <div class="modal__cta">
+          <a href="#kontakt" class="btn btn--primary btn--full" data-close-modal>Kontakta för offert</a>
+          <p class="modal__disclaimer">Priserna är riktpriser. Slutpris enligt offert baserat på yta, skick och frekvens.</p>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- PRISER / ROT RUT -->
   <section id="priser" class="section section--alt">
@@ -240,6 +286,141 @@
 
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    // --- Service price data ---
+    const services = {
+      hem: {
+        icon: '🏠',
+        kind: 'Privat · Rut-avdragsgill',
+        title: 'Hemstädning',
+        desc: 'Regelbunden eller enstaka städning av ditt hem — kök, badrum, ytor, damm och golv.',
+        columns: ['Tjänst', 'Exkl. moms', 'Inkl. moms', 'Efter RUT'],
+        rows: [
+          ['Timpris', '450 kr/h', '562 kr/h', '281 kr/h'],
+          ['Paket upp till 50 kvm', '3 984 kr', '4 980 kr', '2 490 kr'],
+          ['Paket 50–75 kvm', '4 784 kr', '5 980 kr', '2 990 kr'],
+          ['Paket 75–100 kvm', '5 584 kr', '6 980 kr', '3 490 kr']
+        ],
+        note: '✓ Rutavdrag 50 % dras direkt på fakturan.',
+      },
+      trapp: {
+        icon: '🪜',
+        kind: 'Företag · BRF / Fastighet',
+        title: 'Trappstädning',
+        desc: 'Schemalagd städning av trapphus, entréer och gemensamma ytor. Fast månadspris efter antal våningar och frekvens.',
+        columns: ['Tjänst', 'Exkl. moms', 'Inkl. moms'],
+        rows: [
+          ['Per tillfälle (2–3 vån)', 'från 650 kr', 'från 812 kr'],
+          ['Per tillfälle (4–6 vån)', 'från 950 kr', 'från 1 187 kr'],
+          ['Månadspris (1 ggr/vecka, 3 vån)', 'från 2 400 kr', 'från 3 000 kr']
+        ],
+        note: 'Ingen Rut/Rot för fastighetsstäd. Företag drar moms själva.',
+      },
+      bygg: {
+        icon: '🧱',
+        kind: 'Privat &amp; Företag',
+        title: 'Byggstädning',
+        desc: 'Grovstäd och finstäd efter renovering eller nybyggnation. Avtorkning, dammsugning, sanering av byggdamm, rengöring av vitvaror och fönster.',
+        columns: ['Tjänst', 'Exkl. moms', 'Inkl. moms', 'Efter ROT*'],
+        rows: [
+          ['Grovstäd', '35 kr/kvm', '44 kr/kvm', '31 kr/kvm'],
+          ['Finstäd / slutstäd', '60 kr/kvm', '75 kr/kvm', '53 kr/kvm'],
+          ['Timpris', '495 kr/h', '619 kr/h', '433 kr/h']
+        ],
+        note: '*ROT-avdrag 30 % gäller endast privatpersoner vid arbete kopplat till renovering.',
+      },
+      kontor: {
+        icon: '🏢',
+        kind: 'Företag',
+        title: 'Kontorsstädning',
+        desc: 'Återkommande städning av kontorsytor, kök, toaletter och golv. Fast schema eller flexibelt upplägg.',
+        columns: ['Tjänst', 'Exkl. moms', 'Inkl. moms'],
+        rows: [
+          ['Timpris', '350 kr/h', '437 kr/h'],
+          ['Månadspris (1 ggr/vecka)', 'från 2 800 kr', 'från 3 500 kr'],
+          ['Månadspris (2 ggr/vecka)', 'från 5 200 kr', 'från 6 500 kr']
+        ],
+        note: 'Företag drar moms själva. Ingen Rut-/Rotavdrag för kontorsstäd.',
+      },
+      bod: {
+        icon: '🚧',
+        kind: 'Företag · Byggarbetsplats',
+        title: 'Bodetablering',
+        desc: 'Städning av arbetsbodar, personalutrymmen och site-kontor — återkommande eller inför besiktning. Vi hanterar även enklare dusch/WC-rum.',
+        columns: ['Tjänst', 'Exkl. moms', 'Inkl. moms'],
+        rows: [
+          ['Timpris', '395 kr/h', '494 kr/h'],
+          ['Per tillfälle (mindre bodgrupp)', 'från 1 200 kr', 'från 1 500 kr'],
+          ['Veckoavtal (återkommande)', 'från 2 400 kr/mån', 'från 3 000 kr/mån']
+        ],
+        note: 'Offert per projekt. Rabatt vid återkommande avtal.',
+      },
+      fonster: {
+        icon: '🪟',
+        kind: 'Privat &amp; Företag',
+        title: 'Fönsterputsning',
+        desc: 'Strimfria fönster in- och utvändigt. Inkl. karmar och bågar. Minimidebitering 500 kr exkl. utkörning.',
+        columns: ['Tjänst', 'Exkl. moms', 'Inkl. moms', 'Efter RUT'],
+        rows: [
+          ['Per fönster (standard)', '45 kr', '56 kr', '28 kr'],
+          ['Per fönster (spröjsat / 3-glas)', '65 kr', '81 kr', '41 kr'],
+          ['Timpris', '450 kr/h', '562 kr/h', '281 kr/h']
+        ],
+        note: '✓ Rutavdrag 50 % gäller privatpersoner. Företag: pris exkl. moms visas ovan.',
+      }
+    };
+
+    // --- Modal logic ---
+    const modal = document.getElementById('priceModal');
+    const modalIcon = document.getElementById('modalIcon');
+    const modalKind = document.getElementById('modalKind');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDesc = document.getElementById('modalDesc');
+    const modalPrices = document.getElementById('modalPrices');
+    const modalNote = document.getElementById('modalNote');
+
+    function openModal(key) {
+      const s = services[key];
+      if (!s) return;
+      modalIcon.textContent = s.icon;
+      modalKind.innerHTML = s.kind;
+      modalTitle.textContent = s.title;
+      modalDesc.textContent = s.desc;
+
+      let table = '<table class="price-table"><thead><tr>';
+      s.columns.forEach(c => table += `<th>${c}</th>`);
+      table += '</tr></thead><tbody>';
+      s.rows.forEach(row => {
+        table += '<tr>';
+        row.forEach((cell, i) => {
+          table += `<td${i === 0 ? ' class="price-table__label"' : ''}>${cell}</td>`;
+        });
+        table += '</tr>';
+      });
+      table += '</tbody></table>';
+      modalPrices.innerHTML = table;
+      modalNote.textContent = s.note;
+
+      modal.hidden = false;
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      modal.hidden = true;
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    document.querySelectorAll('.service[data-service]').forEach(el => {
+      el.addEventListener('click', () => openModal(el.dataset.service));
+    });
+    document.querySelectorAll('[data-close-modal]').forEach(el => {
+      el.addEventListener('click', closeModal);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modal.hidden) closeModal();
+    });
   </script>
 
 </body>
