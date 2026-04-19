@@ -314,11 +314,13 @@ body {
   position: fixed;
   inset: 0;
   z-index: 100;
-  display: grid;
+  display: none;
   place-items: center;
   padding: 20px;
 }
-.modal[hidden] { display: none; }
+.modal.is-open {
+  display: grid;
+}
 .modal__backdrop {
   position: absolute;
   inset: 0;
